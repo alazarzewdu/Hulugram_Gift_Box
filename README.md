@@ -114,12 +114,6 @@ The app is fully accessible:
 - **Reduced Motion**: Animations are simplified when `prefers-reduced-motion` is enabled
 - **Focus Management**: Visible focus indicators
 
-## Testing
-
-No tests included currently. With more time, I would add:
-- Unit tests for the sound effects hook
-- Component tests for GiftBox interactions
-- E2E tests for the full user flow
 
 ## Time Spent
 
