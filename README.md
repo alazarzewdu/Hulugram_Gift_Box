@@ -2,6 +2,9 @@
 
 A single-page app with an interactive gift box animation. Click or press Enter to open the box and see confetti, sound effects, and smooth animations.
 
+## Live Preview
+https://hulugram-gift-box.vercel.app/
+
 ## Features
 
 - Interactive gift box that opens on click or keyboard (Enter/Space)
