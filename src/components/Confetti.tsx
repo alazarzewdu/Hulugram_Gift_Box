@@ -36,29 +36,12 @@ export const Confetti = ({ isActive }: { isActive: boolean }) => {
       return
     }
 
-    const particleCount = prefersReducedMotion ? 20 : 60
     const newParticles: ConfettiParticle[] = []
 
-    // Generate colored particles
-    for (let i = 0; i < particleCount * 0.5; i++) {
-      newParticles.push({
-        id: i,
-        x: Math.random() * 100,
-        y: -10,
-        type: "particle",
-        color: CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)],
-        delay: Math.random() * 0.3,
-        duration: 2 + Math.random() * 1.5,
-        rotation: Math.random() * 360,
-        scale: 0.5 + Math.random() * 0.5,
-      })
-    }
-
-    // Generate letters
-    const letterCount = prefersReducedMotion ? 5 : HULUGRAM_LETTERS.length * 2
+    const letterCount = prefersReducedMotion ? 8 : HULUGRAM_LETTERS.length * 3
     for (let i = 0; i < letterCount; i++) {
       newParticles.push({
-        id: particleCount * 0.5 + i,
+        id: i,
         x: Math.random() * 100,
         y: -10,
         type: "letter",
@@ -67,22 +50,21 @@ export const Confetti = ({ isActive }: { isActive: boolean }) => {
         delay: Math.random() * 0.5,
         duration: 2.5 + Math.random() * 1,
         rotation: Math.random() * 360,
-        scale: 0.8 + Math.random() * 0.4,
+        scale: 1.2 + Math.random() * 0.6,
       })
     }
 
-    // Generate logo icons
-    const logoCount = prefersReducedMotion ? 3 : 8
+    const logoCount = prefersReducedMotion ? 5 : 12
     for (let i = 0; i < logoCount; i++) {
       newParticles.push({
-        id: particleCount * 0.5 + letterCount + i,
+        id: letterCount + i,
         x: Math.random() * 100,
         y: -10,
         type: "logo",
         delay: Math.random() * 0.4,
         duration: 2.5 + Math.random() * 1,
         rotation: Math.random() * 360,
-        scale: 0.3 + Math.random() * 0.3,
+        scale: 0.6 + Math.random() * 0.4,
       })
     }
 
@@ -119,13 +101,12 @@ export const Confetti = ({ isActive }: { isActive: boolean }) => {
             top: 0,
           }}
         >
-          {particle.type === "particle" && <div className="w-3 h-3 rounded-full" style={{ backgroundColor: particle.color }} />}
           {particle.type === "letter" && (
-            <span className="text-2xl font-bold" style={{ color: particle.color }}>
+            <span className="text-3xl font-bold" style={{ color: particle.color }}>
               {particle.content}
             </span>
           )}
-          {particle.type === "logo" && <img src="/logo.png" alt="" className="w-8 h-8 object-contain" aria-hidden="true" />}
+          {particle.type === "logo" && <img src="/logo.png" alt="" className="w-12 h-12 object-contain" aria-hidden="true" />}
         </motion.div>
       ))}
     </div>
