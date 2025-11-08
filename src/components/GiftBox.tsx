@@ -34,7 +34,6 @@ export const GiftBox = ({ onReset }: GiftBoxProps) => {
     return () => mediaQuery.removeEventListener("change", handler)
   }, [])
 
-  // Idle shake animation
   useEffect(() => {
     if (isOpen || prefersReducedMotion) return
 
@@ -57,10 +56,8 @@ export const GiftBox = ({ onReset }: GiftBoxProps) => {
 
     setIsOpen(true)
 
-    // Play opening sound
     playOpenSound()
 
-    // Animate lid opening
     await lidControls.start({
       y: prefersReducedMotion ? -80 : -120,
       rotate: prefersReducedMotion ? -15 : -25,
@@ -73,7 +70,6 @@ export const GiftBox = ({ onReset }: GiftBoxProps) => {
       },
     })
 
-    // Animate box bounce
     await boxControls.start({
       scale: [1, 1.05, 0.98, 1.02, 1],
       transition: {
@@ -82,7 +78,6 @@ export const GiftBox = ({ onReset }: GiftBoxProps) => {
       },
     })
 
-    // Trigger confetti
     setShowConfetti(true)
   }, [isOpen, lidControls, boxControls, prefersReducedMotion, playOpenSound])
 
@@ -98,10 +93,21 @@ export const GiftBox = ({ onReset }: GiftBoxProps) => {
     [handleOpen, isOpen]
   )
 
+  useEffect(() => {
+    const handleGlobalKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Enter" && !isOpen) {
+        event.preventDefault()
+        handleOpen()
+      }
+    }
+
+    window.addEventListener("keydown", handleGlobalKeyDown)
+    return () => window.removeEventListener("keydown", handleGlobalKeyDown)
+  }, [isOpen, handleOpen])
+
   return (
     <>
-      <div className="relative w-full max-w-md mx-auto">
-        {/* Reset button - only show when opened */}
+      <div className="relative w-full max-w-md mx-auto mt-50">
         {isOpen && (
           <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 1 }} className="absolute -top-6 right-0 z-50">
             <Button onClick={handleReset} variant="outline" size="sm" className="rounded-full shadow-lg" aria-label="Reset gift box">
@@ -121,23 +127,21 @@ export const GiftBox = ({ onReset }: GiftBoxProps) => {
           whileHover={!isOpen ? { scale: 1.02 } : {}}
           whileTap={!isOpen ? { scale: 0.98 } : {}}
         >
-          {/* Gift Box Body */}
           <motion.div animate={boxControls} className="relative z-10">
             <img src="/gift_2.png" alt="Gift box" className="w-full h-auto drop-shadow-2xl" />
           </motion.div>
 
-          {/* Gift Box Lid */}
           <motion.div
             animate={lidControls}
-            className="absolute top-0 left-0 w-full z-20"
+            className="absolute left-0 w-full z-20"
             style={{
+              top: "-12.5rem",
               transformOrigin: "center bottom",
             }}
           >
             <img src="/gift_1.png" alt="Gift box lid" className="w-full h-auto drop-shadow-2xl" />
           </motion.div>
 
-          {/* Glow effect when hovering */}
           {!isOpen && (
             <motion.div
               className="absolute inset-0 -z-10 blur-3xl opacity-0 rounded-full"
@@ -149,7 +153,6 @@ export const GiftBox = ({ onReset }: GiftBoxProps) => {
           )}
         </motion.div>
 
-        {/* Instruction text */}
         {!isOpen && (
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="text-center mt-12 space-y-3">
             <p className="text-lg sm:text-xl text-muted-foreground font-medium">
@@ -159,7 +162,6 @@ export const GiftBox = ({ onReset }: GiftBoxProps) => {
           </motion.div>
         )}
 
-        {/* Success message after opening */}
         {isOpen && (
           <motion.div initial={{ opacity: 0, scale: 0.9, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={{ delay: 0.5, type: "spring", stiffness: 200 }} className="text-center mt-12 space-y-4">
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-2">
@@ -167,12 +169,6 @@ export const GiftBox = ({ onReset }: GiftBoxProps) => {
             </div>
 
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary tracking-tight">Congratulations!</h2>
-
-            <p className="text-lg sm:text-xl text-foreground/90 max-w-lg mx-auto leading-relaxed">
-              Your Hulugram gift has been revealed!
-              <br />
-              <span className="text-base text-muted-foreground mt-2 inline-block">Check out all the confetti at the bottom 🎊</span>
-            </p>
           </motion.div>
         )}
       </div>
