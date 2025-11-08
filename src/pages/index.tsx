@@ -1,6 +1,5 @@
 import { GiftBox } from "@/components/GiftBox"
 import { ThemeToggle } from "@/components/ThemeToggle"
-import { Badge } from "@/components/ui/badge"
 import { LinkPreview } from "@/components/ui/link-preview"
 import { useState } from "react"
 

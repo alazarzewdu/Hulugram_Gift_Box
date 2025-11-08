@@ -1,4 +1,4 @@
-import * as React from "react";
+
 import { forwardRef } from "react";
 import { NavLink as RouterNavLink, type NavLinkProps } from "react-router-dom";
 import { cn } from "@/lib/utils";
